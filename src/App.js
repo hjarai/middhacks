@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Map from "./components/Map.js"
 
-function App() {
+export default function App() {
+  const [page, setPage] = React.useState('home')
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>middlebury should walk around</h1>
+      <p>how do you want to pick a path?</p>
+      <button onClick={() => setPage('map')}>map</button>
+      <button onClick={() => setPage('activity')}>activity</button>
+      <button onClick={() => setPage('distance')}>distance</button>
+      {(page==='map') &&
+    <div className= "card">
+      
+        <div className="container">
+          <h4><b>Map whoo</b></h4>
+          <p>Description of this map</p>
+      </div>
+      <Map/>
+
+    </div>}
     </div>
   );
 }
-
-export default App;
