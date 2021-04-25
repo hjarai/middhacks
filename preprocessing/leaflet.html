@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<head>
+    <title>Vermont Trails</title>
+    <meta charset="utf-8" />
+    <?xml version="1.0" encoding="UTF-8"?>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   
+    <script src="https://unpkg.com/shpjs@latest/dist/shp.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+<body>
+    <div id="mapid" style="height: 98vh; width: 99vw"></div>
+    <script>
+        var mymap = L.map('mapid').setView([44, -72], 6);
+        
+        var baseMap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>, Data from <a href="https://geodata.vermont.gov/">Vermont GeoData Portal</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiamNhbWJlZm9ydCIsImEiOiJja2x6Ym4xaGQwOWUxMnVyM3J2aW54bXhuIn0.vIUQw48WSxIujl74dYNqkA'
+        });
+        
+        function polystyle(feature) {
+            return {
+                weight: 2,
+                opacity: 1,
+                color: 'red',
+                fillOpacity: .8
+            }
+        }
+    
+        function polystyle2(feature) {
+            return {
+                weight: 2,
+                opacity: 1,
+                color: 'blue',
+                fillOpacity: .8
+            }
+        }
+
+        function polystyle3(feature) {
+            return {
+                weight: 2,
+                opacity: 1,
+                color: 'green',
+                fillOpacity: .2
+            }
+        }
+
+        let trails_path = "trails.geojson";
+        let e911_trails_path = "e911_trails.geojson";
+        let addison_poly_path = "addison.geojson"
+        
+        var trails = L.geoJSON(null, {style:polystyle} );
+        var e911_trails = L.geoJSON(null, {style:polystyle2} );
+        var addison_poly = L.geoJSON(null, {style:polystyle3} );
+
+        // Use JQuery to import geoJSON files
+        $.getJSON(trails_path, function(data) {
+            trails.setStyle(polystyle);
+            trails.addData(data);
+        });
+
+        $.getJSON(e911_trails_path, function(data) {
+            e911_trails.setStyle(polystyle2);
+            e911_trails.addData(data);
+        });
+
+        $.getJSON(addison_poly_path, function(data) {
+            addison_poly.setStyle(polystyle3);
+            addison_poly.addData(data);
+        });
+
+        trails.bindPopup(function (layer) {
+            return layer.feature.properties.TRAILNAME;
+        });
+
+        e911_trails.bindPopup(function (layer) {
+            return layer.feature.properties.TRAILNAME;
+        });
+
+        // Add base layer
+        baseMap.addTo(mymap);
+
+        // Example alert of Lat & Long where mouse is clicked
+        mymap.on('click', function(e) {
+            alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+        });
+
+        // Setting non-default overlays
+        var overlays = {
+            "E911 Trails": e911_trails,
+            "Addison County": addison_poly
+        }
+
+        // Setting the 'overlays' layers as optional
+        L.control.layers(trails, overlays).addTo(mymap);
+
+    </script>
+
+</body>
+
+</html>
