@@ -47,11 +47,22 @@
             }
         }
 
+        function polystyle3(feature) {
+            return {
+                weight: 2,
+                opacity: 1,
+                color: 'green',
+                fillOpacity: .2
+            }
+        }
+
         let trails_path = "trails.geojson";
         let e911_trails_path = "e911_trails.geojson";
+        let addison_poly_path = "addison.geojson"
         
         var trails = L.geoJSON(null, {style:polystyle} );
         var e911_trails = L.geoJSON(null, {style:polystyle2} );
+        var addison_poly = L.geoJSON(null, {style:polystyle3} );
 
         // Use JQuery to import geoJSON files
         $.getJSON(trails_path, function(data) {
@@ -62,6 +73,11 @@
         $.getJSON(e911_trails_path, function(data) {
             e911_trails.setStyle(polystyle2);
             e911_trails.addData(data);
+        });
+
+        $.getJSON(addison_poly_path, function(data) {
+            addison_poly.setStyle(polystyle3);
+            addison_poly.addData(data);
         });
 
         trails.bindPopup(function (layer) {
@@ -83,7 +99,8 @@
         // Setting non-default overlays
         var overlays = {
             "VT Green Mountain": trails,
-            "E911 Trails": e911_trails
+            "E911 Trails": e911_trails,
+            "Addison County": addison_poly
         }
 
         // Setting the 'overlays' layers as optional
