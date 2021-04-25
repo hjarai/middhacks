@@ -1,3 +1,6 @@
+# Python file that downloads trails in Vermont as GeoJson data
+# from the Vermont Open GeoData Portal: https://geodata.vermont.gov/
+
 import requests
 import json
 import geopandas as gpd
@@ -50,15 +53,15 @@ def fetch_counties():
 
     request_API_data(counties_url, counties_json_path)
     json_to_geojson(counties_json_path, counties_geojson_path)
+    print("Outputting {0} file!".format(counties_geojson_path))
     return counties_geojson_path
 
 
 def filter_addison_poly(counties_path, out_path):
-    # Returns 
-
     gdf = gpd.read_file(counties_path)
     addison_poly = gdf.loc[gdf["CNTYNAME"] == "ADDISON", ["CNTYNAME", "geometry"]]
     addison_poly.to_file(out_path, driver = "GeoJSON")
+    print("Outputting Addison county polygon as a geojson...")
     return out_path
 
 
