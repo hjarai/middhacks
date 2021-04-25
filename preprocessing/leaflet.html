@@ -98,13 +98,12 @@
 
         // Setting non-default overlays
         var overlays = {
-            "VT Green Mountain": trails,
             "E911 Trails": e911_trails,
             "Addison County": addison_poly
         }
 
         // Setting the 'overlays' layers as optional
-        L.control.layers(null, overlays).addTo(mymap);
+        L.control.layers(trails, overlays).addTo(mymap);
 
     </script>
 
