@@ -24,7 +24,7 @@ class Map extends Component {
         });
         
   return (
-    <MapContainer center={[44.0084885, -73.1761]} zoom={13}>
+    <MapContainer center={[44.0084885, -73.1761]} zoom={14}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
