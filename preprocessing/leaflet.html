@@ -81,7 +81,7 @@
         });
 
         trails.bindPopup(function (layer) {
-            return layer.feature.properties.TRAILNAME;
+            return layer.feature.properties.TRAIL_NAME;
         });
 
         e911_trails.bindPopup(function (layer) {
@@ -91,19 +91,19 @@
         // Add base layer
         baseMap.addTo(mymap);
 
-        // Example alert of Lat & Long where mouse is clicked
-        mymap.on('click', function(e) {
-            alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-        });
-
-        // Setting non-default overlays
-        var overlays = {
+        // Setting optional overlays
+        var optionals = {
+            'VT Green Mountain Trails': trails,
             "E911 Trails": e911_trails,
             "Addison County": addison_poly
         }
 
+        // Hard setting VT Green Mountain Trails & Addison County
+        trails.addTo(mymap);
+        addison_poly.addTo(mymap);
+
         // Setting the 'overlays' layers as optional
-        L.control.layers(trails, overlays).addTo(mymap);
+        L.control.layers(null, optionals).addTo(mymap);
 
     </script>
 
