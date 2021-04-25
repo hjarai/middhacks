@@ -16,8 +16,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 </head>
 <body>
+
     <div id="mapid" style="height: 98vh; width: 99vw"></div>
     <script>
+        // Set the base Leaflet map
         var mymap = L.map('mapid').setView([44, -72], 6);
         
         var baseMap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -29,6 +31,7 @@
             accessToken: 'pk.eyJ1IjoiamNhbWJlZm9ydCIsImEiOiJja2x6Ym4xaGQwOWUxMnVyM3J2aW54bXhuIn0.vIUQw48WSxIujl74dYNqkA'
         });
         
+        // Create a few CSS styles for various Leaflet layers
         function polystyle(feature) {
             return {
                 weight: 2,
@@ -56,6 +59,7 @@
             }
         }
 
+        // Import GeoJson trail data as a layer on leaflet
         let trails_path = "trails.geojson";
         let e911_trails_path = "e911_trails.geojson";
         let addison_poly_path = "addison.geojson"
@@ -64,7 +68,7 @@
         var e911_trails = L.geoJSON(null, {style:polystyle2} );
         var addison_poly = L.geoJSON(null, {style:polystyle3} );
 
-        // Use JQuery to import geoJSON files
+        // Use JQuery to import the GeoJson files
         $.getJSON(trails_path, function(data) {
             trails.setStyle(polystyle);
             trails.addData(data);
@@ -80,6 +84,7 @@
             addison_poly.addData(data);
         });
 
+        // Allow users to click on trails and see the trail name
         trails.bindPopup(function (layer) {
             return layer.feature.properties.TRAIL_NAME;
         });
